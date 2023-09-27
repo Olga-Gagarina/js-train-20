@@ -90,10 +90,14 @@ console.log(newCar.speed);
  * | fuelType     |  "Petrol"           |
  * | speed        |  0                  |
  */
-console.log(newCar.toString());
-console.log(newCar.valueOf());
-newCar.accelerate(50);
-newCar.brake(20);
+const car = new Car("Audi","A6", 2018, 30000, "Petrol", 0);
+    
+
+
+console.log(car.toString());
+console.log(car.valueOf());
+car.accelerate(50);
+car.brake(20);
 // Викличемо функції toString та valueOf об'єкта car
 
 // Використовуємо методи для прискорення та передаємо 50
@@ -225,7 +229,7 @@ Car.prototype.drive = function (kilometers) {
 };
 
 
-const boundDrive = Car.drive.bind(myTruck);
+const boundDrive = car.drive.bind(car);
 boundDrive(100);
 
 // Викликаємо метод tow з вагою меншою за towingCapacity
@@ -252,11 +256,20 @@ boundDrive(100);
  */
 
 function ElectricCar(brand, model, year, mileage, batteryCapacity) {
+  if(new.target === undefined){
+    return console.error("Конструктор має бути викликаний з 'new'");
+  }
+   Car.call(this, brand,model,year,mileage) ;
+   this.batteryCapacity = batteryCapacity;
+  
   // Перевіряємо, чи функцію було викликано з new, якщо ні виволимо помилку "Конструктор має бути викликаний з 'new'"
   // Викликаємо Car.call та передаємо в нього this, brand, model, year, mileage
   //  Записуєм в this.batteryCapacity значення аргументу batteryCapacity
 }
-
+ElectricCar.prototype.toString = function (){
+  return `${this.brand}, ${this.model}, ${this.year} - Батарея: ${this.batteryCapacity} kWh`;
+};
+ElectricCar();
 // Перевизначаємо toString для прототипу ElectricCar він має повертати <brand> <model> <year> - Батарея: <batteryCapacity> kWh
 
 // Створюємо новий екземпляр ElectricCar
@@ -272,5 +285,6 @@ function ElectricCar(brand, model, year, mileage, batteryCapacity) {
  * | mileage         | 10000             |
  * | batteryCapacity | 100               |
  */
-
+const tesla = new ElectricCar("Tesla", "Model S", 2020, 10000, 100);
+console.log(tesla.toString());
 // Викликаємо метод toString об'єкту tesla та виводимо в консоль
